@@ -2,6 +2,8 @@ const { mongoose } = require("mongoose");
 const Paper = require("./../models/Paper");
 const asyncHandler = require("express-async-handler");
 
+
+
 // @desc Get Papers for each Staff
 // @route GET /Paper/staff/staffId
 // @access Everyone
@@ -37,7 +39,7 @@ const getPapersStudent = asyncHandler(async (req, res) => {
         localField: "teacher",
         foreignField: "_id",
         as: "teacher",
-      },
+      }
     },
     {
       $unwind: "$teacher",
@@ -47,6 +49,7 @@ const getPapersStudent = asyncHandler(async (req, res) => {
         students: {
           $in: [new mongoose.Types.ObjectId(req.params.studentId), "$students"],
         },
+        likedBy: 1,
         semester: 1,
         year: 1,
         paper: 1,
@@ -155,7 +158,7 @@ const getPaper = asyncHandler(async (req, res) => {
 // @route POST /Paper
 // @access Private
 const addPaper = asyncHandler(async (req, res) => {
-  const { department, semester, year, paper, students, teacher } = req.body;
+  const { department, semester, year, paper, students, teacher, category } = req.body;
 
   // Confirm Data
   if (!department || !paper || !semester || !year || !students || !teacher) {
@@ -185,6 +188,7 @@ const addPaper = asyncHandler(async (req, res) => {
     year,
     students,
     teacher,
+    category,
   };
 
   // Create and Store New staff
@@ -227,6 +231,36 @@ const updateStudents = asyncHandler(async (req, res) => {
   }
 });
 
+// @desc Update Paper
+// @route PATCH /Paper
+// @access Private
+const addLikeToPaper = asyncHandler(async (req, res) => {
+  const { likedBy } = req.body;
+
+  // // Confirm Data
+  // if (!paper) {
+  //   return res.status(400).json({ message: "All fields are required" });
+  // }
+
+  // Find Record
+  const record = await Paper.findById(req.params.paperId).exec();
+
+  if (!record) {
+    return res.status(404).json({ message: "Paper doesn't exist" });
+  }
+
+  record.likedBy = likedBy;
+
+  const save = await record.save();
+  if (save) {
+    res.json({
+      message: ` Liked`,
+    });
+  } else {
+    res.json({ message: "Like Failed" });
+  }
+});
+
 // @desc Delete Paper
 // @route DELETE /Paper
 // @access Private
@@ -250,6 +284,7 @@ const deletePaper = asyncHandler(async (req, res) => {
 
 module.exports = {
   addPaper,
+  addLikeToPaper,
   getAllPapers,
   getPapersStaff,
   getPapersStudent,

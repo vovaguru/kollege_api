@@ -1,6 +1,5 @@
 const mongoose = require("mongoose");
 
-// Staff Details
 const staffSchema = new mongoose.Schema({
   username: {
     type: String,

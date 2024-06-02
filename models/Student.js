@@ -1,6 +1,5 @@
 const mongoose = require("mongoose");
 
-// Student Details
 const studentSchema = new mongoose.Schema({
   name: {
     type: String,
@@ -22,6 +21,14 @@ const studentSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  achievements: {
+    type: String,
+    default: "Нет добавленных достижений",
+  },
+  publications: {
+    type: String,
+    default: "Нет добавленных публикаций",
+  }
 });
 
 module.exports = mongoose.model("Student", studentSchema);

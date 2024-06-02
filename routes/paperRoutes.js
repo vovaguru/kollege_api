@@ -15,4 +15,6 @@ router
   .patch(paperController.updateStudents)
   .delete(paperController.deletePaper);
 
+router.route("/:paperId/:studentId").patch(paperController.addLikeToPaper)
+
 module.exports = router;

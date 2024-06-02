@@ -29,6 +29,17 @@ const paperSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: "Staff",
   },
+  likedBy: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Student",
+      default: [],
+    },
+  ],
+  category: {
+    type: String,
+    required: true,
+  }
 });
 
 module.exports = mongoose.model("Paper", paperSchema);

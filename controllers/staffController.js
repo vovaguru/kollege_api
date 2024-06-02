@@ -79,6 +79,7 @@ const createNewStaff = asyncHandler(async (req, res) => {
   // Hash Password
   const hashedPwd = await bcrypt.hash(password, 10); // salt rounds
 
+  console.log(hashedPwd);
   const staffObj = {
     username,
     name,
@@ -92,7 +93,8 @@ const createNewStaff = asyncHandler(async (req, res) => {
   const staff = await Staff.create(staffObj);
 
   if (staff) {
-    res.status(201).json({ message: `New Staff ${username} Registered` });
+    res.status(201).json({ message: `New Staff ${username} Registered!` });
+    console.log(staffObj);
   } else {
     res.status(400).json({ message: "Invalid data received" });
   }

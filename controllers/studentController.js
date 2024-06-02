@@ -71,7 +71,7 @@ const createNewStudent = asyncHandler(async (req, res) => {
 // @route PATCH /Student
 // @access Private
 const updateStudent = asyncHandler(async (req, res) => {
-  const { id, name, email, username, password } = req.body;
+  const { id, name, email, username, password, achievements, publications } = req.body;
 
   // Confirm Data
   if (!id || !name || !email || !username) {
@@ -96,6 +96,8 @@ const updateStudent = asyncHandler(async (req, res) => {
   student.name = name;
   student.email = email;
   student.username = username;
+  student.achievements = achievements;
+  student.publications = publications;
 
   if (password) {
     // Hash Pwd
